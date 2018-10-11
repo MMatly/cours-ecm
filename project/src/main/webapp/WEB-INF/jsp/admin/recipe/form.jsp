@@ -40,7 +40,7 @@
 </nav>
 
 <div class="container">
-    <h1>Edition de recette</h1>
+    <h1>Edition de recettes</h1>
 
     <c:if test="${not empty flashMessage}">
         <div class="alert alert-success" role="alert">${fn:escapeXml(flashMessage)}</div>
