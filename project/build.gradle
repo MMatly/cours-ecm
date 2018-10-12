@@ -53,4 +53,6 @@ dependencies {
     tomcat "org.apache.tomcat.embed:tomcat-embed-core:${tomcatVersion}"
     tomcat "org.apache.tomcat.embed:tomcat-embed-logging-juli:${tomcatVersion}"
     tomcat "org.apache.tomcat.embed:tomcat-embed-jasper:${tomcatVersion}"
+
+    compile 'org.springframework.security:spring-security-taglibs:4.0.3.RELEASE'
 }
