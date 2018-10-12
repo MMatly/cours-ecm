@@ -3,8 +3,11 @@ package fr.cmm.controller;
 import javax.inject.Inject;
 
 import fr.cmm.controller.form.SearchForm;
+import fr.cmm.domain.Recipe;
 import fr.cmm.helper.PageQuery;
 import fr.cmm.helper.Pagination;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import fr.cmm.helper.Columns;
 import fr.cmm.service.RecipeService;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -20,6 +24,7 @@ import java.util.List;
 public class IndexController {
     @Inject
     private RecipeService recipeService;
+    public HttpStatus status = HttpStatus.NOT_FOUND;
 
     @RequestMapping({"/index", "/"})
     public String index(ModelMap model) {
@@ -70,10 +75,14 @@ public class IndexController {
 
     @RequestMapping("/recette/{id}")
     public String recette(@PathVariable("id") String id, ModelMap model) {
-        model.put("recipe", recipeService.findById(id));
-
+        Recipe recipe = recipeService.findById(id);
+        if (recipe == null ){
+            throw new RecipeNotFoundException();
+        }
+        model.put("recipe", recipe);
         return "recette";
     }
+
 
     @RequestMapping("/contact")
     public String contact() {
@@ -83,6 +92,11 @@ public class IndexController {
     @RequestMapping("/mentions-legales")
     public String mentionsLegales() {
         return "mentions-legales";
+    }
+
+    @RequestMapping("/erreur")
+    public String erreur() {
+        return "erreur";
     }
 }
 
