@@ -55,6 +55,9 @@ public class IndexControllerTest {
                 .andExpect(status().is(200))
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(view().name("recette"));
+
+        mockMvc.perform(get("/recette/etnon" + id))
+                .andExpect(status().is(404));
     }
 
     @Test

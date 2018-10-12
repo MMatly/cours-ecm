@@ -6,23 +6,30 @@ import java.util.Date;
 import java.util.List;
 
 import javax.validation.constraints.NotNull;
-
+import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.jongo.marshall.jackson.oid.Id;
 import org.jongo.marshall.jackson.oid.ObjectId;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 
 public class Recipe {
     @Id
     @ObjectId
     private String id;
 
-    @NotEmpty
+    @NotEmpty(message = " est obligatoire")
     private String title;
 
-    @NotNull
+    @NotNull(message = " est obligatoire")
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date date = new Date();
+
+
 
     private String intro;
 
@@ -50,6 +57,7 @@ public class Recipe {
         this.id = id;
     }
 
+
     public String getTitle() {
         return title;
     }
@@ -57,6 +65,7 @@ public class Recipe {
     public void setTitle(String title) {
         this.title = title;
     }
+
 
     public Date getDate() {
         return date;
