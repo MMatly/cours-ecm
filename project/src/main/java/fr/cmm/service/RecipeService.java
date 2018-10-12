@@ -33,10 +33,19 @@ public class RecipeService {
                 .skip(query.skip())
                 .limit(query.getSize())
                 .as(Recipe.class);
+
     }
 
     public long countByQuery(PageQuery query) {
-        return recipeCollection.count();
+        String mongoQuery = "{}";
+        String[] params = {};
+
+        if (query.getTag() != null && !"".equals(query.getTag())) {
+            mongoQuery = "{tags: #}";
+            params = new String[] {query.getTag()};
+        }
+
+        return recipeCollection.count(mongoQuery, (Object[]) params);
     }
 
     public Iterator<Recipe> findRandom(int count) {
@@ -44,6 +53,11 @@ public class RecipeService {
     }
 
     public Recipe findById(String id) {
+        if (! ObjectId.isValid(id)){
+            return null;
+        }
+
+
         return recipeCollection.findOne(new ObjectId(id)).as(Recipe.class);
     }
 

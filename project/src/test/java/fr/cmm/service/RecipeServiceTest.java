@@ -47,6 +47,8 @@ public class RecipeServiceTest {
         Assert.assertEquals("test recipe", recipeCollection.findOne().as(Recipe.class).getTitle());
     }
 
+
+
     @Test
     public void findById() {
         Recipe recipe = new Recipe();
@@ -56,6 +58,13 @@ public class RecipeServiceTest {
 
         Assert.assertEquals("test recipe", recipeService.findById(recipe.getId()).getTitle());
     }
+
+    @Test
+    public void findByIdWithInvalidId(){
+         Assert.assertNull(recipeService.findById("mauvaisId"));
+
+    }
+
 
     @Test
     public void findByQuery() {
@@ -94,6 +103,34 @@ public class RecipeServiceTest {
         pageQuery.setTag("tag1");
 
         Assert.assertEquals(2, stream(recipeService.findByQuery(pageQuery).spliterator(), false).count());
+    }
+
+    @Test
+    public void countByQuery() {
+        recipeService.save(new Recipe());
+        recipeService.save(new Recipe());
+        recipeService.save(new Recipe());
+        recipeService.save(new Recipe());
+        recipeService.save(new Recipe());
+
+        Assert.assertEquals(5, recipeService.countByQuery(new PageQuery()));
+
+    }
+
+    @Test
+    public void countByQueryWithTags() {
+        recipeService.save(new Recipe().withTags("tag1"));
+        recipeService.save(new Recipe().withTags("tag1"));
+        recipeService.save(new Recipe().withTags("tag2"));
+        recipeService.save(new Recipe().withTags("tag2"));
+        recipeService.save(new Recipe().withTags("tag3"));
+
+        PageQuery pageQuery = new PageQuery();
+        pageQuery.setTag("tag3");
+
+        Assert.assertEquals(1, recipeService.countByQuery(pageQuery));
+
+
     }
 
     @Test
