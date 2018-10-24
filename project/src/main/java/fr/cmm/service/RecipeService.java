@@ -53,12 +53,11 @@ public class RecipeService {
     }
 
     public Recipe findById(String id) {
-        if (! ObjectId.isValid(id)){
+        try {
+            return recipeCollection.findOne(new ObjectId(id)).as(Recipe.class);
+        } catch (IllegalArgumentException illegalExc) {
             return null;
         }
-
-
-        return recipeCollection.findOne(new ObjectId(id)).as(Recipe.class);
     }
 
     public void save(Recipe recipe) {
